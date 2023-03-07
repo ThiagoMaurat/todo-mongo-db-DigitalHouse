@@ -16,7 +16,7 @@ const TaskSchema = new Schema({
     maxLength: [200, "Name cannot be more than 200 charactere"],
   },
   date: {
-    type: String,
+    type: Date,
     require: [true, "Please, add a description"],
     unique: false,
     trim: true,
