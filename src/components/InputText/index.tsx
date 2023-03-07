@@ -8,11 +8,14 @@ const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   return (
     <InputChakra
       type="text"
+      width={"100%"}
       placeholder="Digite algo aqui..."
       border="none"
       borderBottom={"1px solid #ccc"}
       background="#FFFF"
+      color="#545454"
       ref={ref}
+      _focus={{ outline: "none" }}
       {...props}
     />
   );

@@ -1,5 +1,5 @@
 import { FieldInputController } from "@/components/InputText/InputController";
-import { Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 interface Form {
@@ -34,10 +34,66 @@ export default function Home() {
           w="100%"
           background="#FFFFFF"
           border-radius="12px"
+          boxShadow="0px 2px 4px rgba(0, 0, 0, 0.25)"
+          borderRadius="12px"
+          justifyContent={"center"}
         >
-          <form>
-            <FieldInputController control={control} name="title" />
-          </form>
+          <Box as="form" w={"100%"}>
+            <Heading
+              fontFamily="Poppins"
+              fontWeight="600"
+              fontSize="16px"
+              lineHeight="24px"
+              color="#343434"
+              mt="46px"
+              textAlign={"center"}
+            >
+              Cadastrar Tarefa
+            </Heading>
+
+            <Flex
+              w="100%"
+              px="2rem"
+              mt="34px"
+              gap={"60px"}
+              flexDirection="column"
+              justifyContent={"center"}
+            >
+              <FieldInputController
+                control={control}
+                placeholder="Título"
+                name="title"
+                w={"100%"}
+                maxW={"286px"}
+              />
+              <FieldInputController
+                control={control}
+                placeholder="Categoria"
+                name="category"
+              />
+              <FieldInputController
+                control={control}
+                placeholder="Data"
+                name="date"
+              />
+              <FieldInputController
+                control={control}
+                placeholder="Descrição"
+                name="description"
+              />
+
+              <Button
+                color={"white"}
+                cursor={"pointer"}
+                border="none"
+                h="52px"
+                background="#E84118"
+                borderRadius="8px"
+              >
+                Salvar
+              </Button>
+            </Flex>
+          </Box>
         </Flex>
       </GridItem>
 
