@@ -31,7 +31,7 @@ async function addTask(body: DateSchema) {
       return response;
     }
   } catch (error) {
-    return error;
+    throw new Error("Error");
   }
 }
 
@@ -44,7 +44,7 @@ async function deleteTask(id: string) {
       return response;
     }
   } catch (error) {
-    return error;
+    throw new Error("Error");
   }
 }
 
@@ -57,7 +57,7 @@ async function patchTask(id: string, body: DateSchema) {
       return response;
     }
   } catch (error) {
-    return error;
+    throw new Error("Error");
   }
 }
 
@@ -70,32 +70,36 @@ const handler: NextApiHandler = async (request, response) => {
 
   let result;
 
-  switch (method) {
-    case "GET":
-      result = await getAllTasks();
-      break;
+  try {
+    switch (method) {
+      case "GET":
+        result = await getAllTasks();
+        break;
 
-    case "POST":
-      result = await addTask(body);
-      status = 201;
-      break;
+      case "POST":
+        result = await addTask(body);
+        status = 201;
+        break;
 
-    case "DELETE":
-      result = await deleteTask(_id);
-      status = 201;
-      break;
+      case "DELETE":
+        result = await deleteTask(_id);
+        status = 201;
+        break;
 
-    case "PATCH":
-      result = await patchTask(_id, body);
-      status = 200;
-      break;
+      case "PATCH":
+        result = await patchTask(_id, body);
+        status = 200;
+        break;
 
-    default:
-      result = { message: "Method not Allowed" };
-      status = 405;
+      default:
+        result = { message: "Method not Allowed" };
+        status = 405;
+    }
+
+    return response.status(status).json(result);
+  } catch (error) {
+    response.status(500).json("Erro");
   }
-
-  return response.status(status).json(result);
 };
 
 export default handler;

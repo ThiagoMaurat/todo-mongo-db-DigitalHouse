@@ -1,11 +1,15 @@
 import { FieldInputController } from "@/components/InputText/InputController";
+import schema from "@/schema/formTaskSchema";
 import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import api from "@/services/axios";
+import Swal from "sweetalert2";
+import { FieldDateController } from "@/components/InputDatePicker/FieldDateController";
 interface Form {
   title: string;
   category: string;
-  date: Date;
+  date: string;
   description: string;
 }
 
@@ -13,10 +17,39 @@ export default function Home() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<Form>({
-    /* resolver: yupResolver(schema), */
+    resolver: yupResolver(schema),
   });
+
+  const submit = async (data: Form) => {
+    console.log(data.date);
+    try {
+      await api.post("/api/tasks", {
+        date: data.date,
+        title: data.title,
+        category: data.category,
+        description: data.description,
+      });
+
+      reset({ category: "", date: "", description: "", title: "" });
+
+      Swal.fire({
+        buttonsStyling: false,
+        title: "Sucesso",
+        html: '<p style="text-align:center">Task cadastrada</p>',
+        icon: "success",
+      });
+    } catch {
+      Swal.fire({
+        buttonsStyling: false,
+        title: "Aviso",
+        html: '<p style="text-align:center">Não foi possível efetuar o cadastro</p>',
+        icon: "warning",
+      });
+    }
+  };
 
   return (
     <Grid h="100vh" templateColumns={"482px 1fr"}>
@@ -38,7 +71,7 @@ export default function Home() {
           borderRadius="12px"
           justifyContent={"center"}
         >
-          <Box as="form" w={"100%"}>
+          <Box as="form" w={"100%"} onSubmit={handleSubmit(submit)}>
             <Heading
               fontFamily="Poppins"
               fontWeight="600"
@@ -65,30 +98,35 @@ export default function Home() {
                 name="title"
                 w={"100%"}
                 maxW={"286px"}
+                error={errors.title}
               />
               <FieldInputController
                 control={control}
                 placeholder="Categoria"
                 name="category"
+                error={errors.category}
               />
-              <FieldInputController
+              <FieldDateController
                 control={control}
-                placeholder="Data"
                 name="date"
+                error={errors.date}
               />
               <FieldInputController
                 control={control}
                 placeholder="Descrição"
                 name="description"
+                error={errors.description}
               />
 
               <Button
                 color={"white"}
                 cursor={"pointer"}
                 border="none"
+                isLoading={isSubmitting}
                 h="52px"
                 background="#E84118"
                 borderRadius="8px"
+                type="submit"
               >
                 Salvar
               </Button>

@@ -57,7 +57,17 @@ export const FieldInputController: React.FC<FieldInputRegisterProps> = ({
 
       {helperText && !error && <FormHelperText>{helperText}</FormHelperText>}
 
-      {!!error && <FormErrorMessage>{error.message}</FormErrorMessage>}
+      {!!error && (
+        <FormErrorMessage
+          fontFamily="Poppins"
+          fontWeight="400"
+          fontSize="10px"
+          lineHeight="15px"
+          color={"#E84118"}
+        >
+          {error.message}
+        </FormErrorMessage>
+      )}
     </FormControl>
   );
 };
