@@ -1,11 +1,21 @@
 import { FieldInputController } from "@/components/InputText/InputController";
 import schema from "@/schema/formTaskSchema";
-import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "@/services/axios";
 import Swal from "sweetalert2";
 import { FieldDateController } from "@/components/InputDatePicker/FieldDateController";
+import { GetStaticProps } from "next";
+import { CardTask } from "@/components/CardTask";
 interface Form {
   title: string;
   category: string;
@@ -13,7 +23,7 @@ interface Form {
   description: string;
 }
 
-export default function Home() {
+export default function Home(data: { data: ResponseListTasks[] }) {
   const {
     control,
     handleSubmit,
@@ -22,9 +32,8 @@ export default function Home() {
   } = useForm<Form>({
     resolver: yupResolver(schema),
   });
-
+  console.log(data.data);
   const submit = async (data: Form) => {
-    console.log(data.date);
     try {
       await api.post("/api/tasks", {
         date: data.date,
@@ -135,7 +144,37 @@ export default function Home() {
         </Flex>
       </GridItem>
 
-      <GridItem backgroundColor={"#FFFF"}></GridItem>
+      <GridItem backgroundColor={"#FFFF"}>
+        <Flex flexDir={"column"}>
+          {data.data.map((item, index) => {
+            return (
+              <CardTask
+                key={`CardTask-${index}`}
+                id={item._id}
+                category={item.category}
+                description={item.description}
+                date={item.date}
+              />
+            );
+          })}
+        </Flex>
+      </GridItem>
     </Grid>
   );
 }
+
+interface ResponseListTasks {
+  _id: string;
+  title: string;
+  category: string;
+  date: string;
+  description: string;
+}
+export const getStaticProps: GetStaticProps = async () => {
+  const { data } = await api.get<ResponseListTasks[]>("/api/tasks");
+  return {
+    props: {
+      data,
+    },
+  };
+};
