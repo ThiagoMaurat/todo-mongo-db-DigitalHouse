@@ -20,7 +20,7 @@ const FormData = z.object({
   description: z.string().min(1).max(40).nonempty("Campo obrigatório"),
 });
 
-type DateSchema = z.infer<typeof FormData>;
+export type DateSchema = z.infer<typeof FormData>;
 
 async function addTask(body: DateSchema) {
   try {

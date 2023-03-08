@@ -1,15 +1,19 @@
+import { DateSchema } from "@/pages/api/tasks";
+import api from "@/services/axios";
 import { Flex, HStack, Text } from "@chakra-ui/react";
-import React from "react";
-
+import React, { useCallback } from "react";
+import { RiDeleteBin5Fill, RiEditBoxLine } from "react-icons/ri";
 interface CardTaskProps {
   id: number;
   category: string;
   description: string;
   date: string;
+  dataDeletedClick: () => void;
 }
 
 export const CardTask = (props: CardTaskProps) => {
-  const { category, date, description, id } = props;
+  const { category, date, description, id, dataDeletedClick } = props;
+
   return (
     <Flex
       w="100%"
@@ -60,7 +64,14 @@ export const CardTask = (props: CardTaskProps) => {
           {description}
         </Text>
 
-        <Flex></Flex>
+        <Flex>
+          <RiEditBoxLine color="#0FBA3F" size={"20px"} />
+          <RiDeleteBin5Fill
+            color="#F90000"
+            size={"20px"}
+            onClick={dataDeletedClick}
+          />
+        </Flex>
       </HStack>
     </Flex>
   );

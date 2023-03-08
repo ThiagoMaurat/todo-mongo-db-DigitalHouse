@@ -17,6 +17,8 @@ import Swal from "sweetalert2";
 import { FieldDateController } from "@/components/InputDatePicker/FieldDateController";
 import { GetStaticProps } from "next";
 import { CardTask } from "@/components/CardTask";
+import { format } from "date-fns";
+import { useCallback } from "react";
 interface Form {
   title: string;
   category: string;
@@ -33,7 +35,7 @@ export default function Home(data: { data: ResponseListTasks[] }) {
   } = useForm<Form>({
     resolver: yupResolver(schema),
   });
-  console.log(data.data);
+
   const submit = async (data: Form) => {
     try {
       await api.post("/api/tasks", {
@@ -60,6 +62,25 @@ export default function Home(data: { data: ResponseListTasks[] }) {
       });
     }
   };
+
+  const deleteTask = useCallback(async (id: string) => {
+    try {
+      await api.delete<{ _id: string }>("/api/tasks", { data: { _id: id } });
+      Swal.fire({
+        buttonsStyling: false,
+        title: "Sucesso",
+        html: '<p style="text-align:center">Task removida</p>',
+        icon: "success",
+      });
+    } catch {
+      Swal.fire({
+        buttonsStyling: false,
+        title: "Aviso",
+        html: '<p style="text-align:center">Não foi possível efetuar a deleção</p>',
+        icon: "warning",
+      });
+    }
+  }, []);
 
   return (
     <Grid h="100vh" templateColumns={"482px 1fr"}>
@@ -168,7 +189,8 @@ export default function Home(data: { data: ResponseListTasks[] }) {
                 id={index + 1}
                 category={item.category}
                 description={item.description}
-                date={item.date}
+                date={format(new Date(item.date), "dd-MM-yyyy")}
+                dataDeletedClick={() => deleteTask(item._id)}
               />
             );
           })}
