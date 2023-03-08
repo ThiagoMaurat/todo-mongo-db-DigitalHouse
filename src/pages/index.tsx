@@ -52,6 +52,9 @@ export default function Home(data: { data: ResponseListTasks[] }) {
         title: "Sucesso",
         html: '<p style="text-align:center">Task cadastrada</p>',
         icon: "success",
+        didClose() {
+          window.location.reload();
+        },
       });
     } catch {
       Swal.fire({
@@ -71,6 +74,9 @@ export default function Home(data: { data: ResponseListTasks[] }) {
         title: "Sucesso",
         html: '<p style="text-align:center">Task removida</p>',
         icon: "success",
+        didClose() {
+          window.location.reload();
+        },
       });
     } catch {
       Swal.fire({
