@@ -8,6 +8,7 @@ import {
   GridItem,
   Heading,
   HStack,
+  Text,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -144,13 +145,27 @@ export default function Home(data: { data: ResponseListTasks[] }) {
         </Flex>
       </GridItem>
 
-      <GridItem backgroundColor={"#FFFF"}>
-        <Flex flexDir={"column"}>
+      <GridItem mx="22px" backgroundColor={"#FFFF"}>
+        <HStack mt="70px" justify={"space-between"}>
+          <Text
+            fontFamily="Poppins"
+            fontWeight="600"
+            fontSize="20px"
+            lineHeight="30px"
+            color="#343434"
+          >
+            Minhas Tarefas
+          </Text>
+
+          <Text>{`Total: ${data.data.length} tarefas`}</Text>
+        </HStack>
+
+        <Flex gap={"22px"} mt="22px" flexDir={"column"}>
           {data.data.map((item, index) => {
             return (
               <CardTask
                 key={`CardTask-${index}`}
-                id={item._id}
+                id={index + 1}
                 category={item.category}
                 description={item.description}
                 date={item.date}

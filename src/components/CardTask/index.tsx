@@ -2,7 +2,7 @@ import { Flex, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface CardTaskProps {
-  id: string;
+  id: number;
   category: string;
   description: string;
   date: string;
@@ -16,7 +16,7 @@ export const CardTask = (props: CardTaskProps) => {
       background="#FFFFFF"
       border="1px solid #C7C4C4"
       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.25)"
-      border-radius="12px"
+      borderRadius="12px"
       p="15px"
       flexDir={"column"}
     >
@@ -27,7 +27,7 @@ export const CardTask = (props: CardTaskProps) => {
           fontSize="20px"
           lineHeight="30px"
         >
-          {`Tarefa${id}`}
+          {`Tarefa ${id}`}
         </Text>
 
         <Text
